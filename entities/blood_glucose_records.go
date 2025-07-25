@@ -85,7 +85,7 @@ func (b *BloodGlucoseRecord) Index(search *validators.BloodGlucoseRecordSearchRe
 		FROM
 			blood_glucose_record b
 		JOIN users u ON b.user_id = u.user_id
-		WHERE deleted_at IS NULL
+		WHERE b.deleted_at IS NULL
 	`
 
 	index := 1
@@ -157,7 +157,7 @@ func (b *BloodGlucoseRecord) Count(search *validators.BloodGlucoseRecordSearchRe
 		FROM
 			blood_glucose_record b
 		JOIN users u ON b.user_id = u.user_id
-		WHERE deleted_at IS NULL
+		WHERE b.deleted_at IS NULL
 	`
 
 	index := 1
