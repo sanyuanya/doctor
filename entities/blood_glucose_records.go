@@ -32,7 +32,7 @@ type BloodGlucoseRecordResponse struct {
 
 func (b *BloodGlucoseRecord) Insert() (*BloodGlucoseRecord, error) {
 	if err := db.QueryRow(`INSERT INTO blood_glucose_record(user_id, update_time, notes) VALUES($1, $2, $3) RETURNING blood_glucose_record_id;`,
-		b.UserID, b.UploadTime, b.Notes).Scan(b.BloodGlucoseRecordID); err != nil {
+		b.UserID, b.UploadTime, b.Notes).Scan(&b.BloodGlucoseRecordID); err != nil {
 		return nil, err
 	}
 	return b, nil
@@ -55,7 +55,13 @@ func (b *BloodGlucoseRecord) FindByID() (*BloodGlucoseRecord, error) {
 		FROM
 			blood_glucose_record 
 		WHERE deleted_at IS NULL AND blood_glucose_record_id = $1
-	`, b.BloodGlucoseRecordID).Scan(b.BloodGlucoseRecordID, b.UserID, b.UploadTime, b.Notes, b.CreatedAt, b.UpdatedAt); err != nil {
+	`, b.BloodGlucoseRecordID).Scan(
+		&b.BloodGlucoseRecordID,
+		&b.UserID,
+		&b.UploadTime,
+		&b.Notes,
+		&b.CreatedAt,
+		&b.UpdatedAt); err != nil {
 		return nil, err
 	}
 
