@@ -308,8 +308,18 @@ func UserEdit(c fiber.Ctx) error {
 }
 
 func UserInfo(c fiber.Ctx) error {
+
+	request := &validators.UserEditRequest{}
+	if err := c.Bind().Body(request); err != nil {
+		return c.JSON(fiber.Map{"message": err.Error(), "status": fiber.StatusBadRequest})
+	}
+
+	if err := request.Validate(); err != nil {
+		return c.JSON(fiber.Map{"message": err.Error(), "status": fiber.StatusBadRequest})
+	}
+
 	user := &entities.User{
-		UserID: middlewares.GetUserIDFromContext(c),
+		UserID: request.UserID,
 	}
 
 	data, err := user.FindByID()
@@ -360,7 +370,7 @@ func GenerateQRCode(c fiber.Ctx) error {
 		return c.JSON(fiber.Map{"message": err.Error(), "status": fiber.StatusNotFound})
 	}
 
-	qRCode, err := utils.GenerateQRCodeBase64("http://www.baidu.com?code="+data.InviteCode, 256)
+	qRCode, err := utils.GenerateQRCodeBase64(fmt.Sprintf("/page/index/index?doctor_id=%d", data.UserID), 256)
 	if err != nil {
 		log.Printf("二维码生成失败: %s\n", err)
 		return c.JSON(fiber.Map{"message": err.Error(), "status": fiber.StatusBadGateway})

@@ -52,3 +52,12 @@ func (m *GetUserPhoneNumberRequest) Validate() error {
 	validate := validator.New(validator.WithRequiredStructEnabled())
 	return validate.Struct(m)
 }
+
+type UserInfoRequest struct {
+	UserID uint `json:"user_id" validate:"required"`
+}
+
+func (m *UserInfoRequest) Validate() error {
+	validate := validator.New(validator.WithRequiredStructEnabled())
+	return validate.Struct(m)
+}

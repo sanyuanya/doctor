@@ -27,7 +27,7 @@ func GetStableAccessToken(appid string, secret string) (*getStableAccessTokenRes
 		AppID:        appid,
 		Secret:       secret,
 		GrantType:    "client_credential",
-		ForceRefresh: false,
+		ForceRefresh: true,
 	}
 
 	payloadBytes, err := json.Marshal(payload)
