@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/static"
 	"github.com/sanyuanya/doctor/controllers"
 	"github.com/sanyuanya/doctor/middlewares"
 )
@@ -31,4 +32,7 @@ func SetupRoutes(app *fiber.App) {
 	protected.Post("/file/upload", controllers.FileUpload)
 
 	protected.Post("/feedback/create", controllers.FeedbackSave)
+
+	api.Get("/storage/*", static.New("./public/storage"))
+
 }
